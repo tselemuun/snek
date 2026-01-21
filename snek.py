@@ -35,6 +35,7 @@ window.geometry(f"{window_width}x{window_height}+{window_x}+{window_y}")
 
 snake = Tile(5*TILE_SIZE, 5*TILE_SIZE) 
 food = Tile(10*TILE_SIZE, 10*TILE_SIZE)
+snake_body = []
 velocityX = 0
 velocityY = 0
 
@@ -59,6 +60,11 @@ def change_direction(e):
 def move():
     global snake
 
+    if(snake.x == food.x and snake.y == food.y):
+        snake_body.append(Tile(food.x, food.y))
+        food.x = random.randint(0, COLS-1) * TILE_SIZE
+        food.y = random.randint(0, ROWS-1) * TILE_SIZE
+
     snake.x += velocityX * TILE_SIZE
     snake.y += velocityY * TILE_SIZE
 
@@ -73,6 +79,8 @@ def draw():
     #mogoi zurn
     canvas.create_rectangle(snake.x, snake.y, snake.x + TILE_SIZE, snake.y + TILE_SIZE, fill = "pink")
 
+    for tile in snake_body:
+        canvas.create_rectangle(tile.x, tile.y, tile.x + TILE_SIZE, tile.y + TILE_SIZE, fill = "pink")
 
     window.after(100, draw) #10fps tei zurn
 
